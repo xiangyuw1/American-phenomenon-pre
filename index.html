@@ -1,0 +1,639 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>American Traffic Culture & Pedestrian Right-of-Way</title>
+    <link rel="preload" href="clip1_power.m4a" as="audio" type="audio/mp4">
+    <link rel="preload" href="clip2_berkeley.m4a" as="audio" type="audio/mp4">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@500;600;700&display=swap');
+
+        :root {
+            --ucb-blue: #003262;
+            --ucb-gold: #FDB515;
+            --presentation-scale: 1;
+            --neon-cyan: #00e9ff;
+            --neon-magenta: #ff2fd8;
+            --neon-gold: #ffd34f;
+            --neon-blue: #1a8dff;
+            --ink: #dff9ff;
+            --muted-ink: #9fbad7;
+            --panel-dark: rgba(8, 16, 38, 0.84);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+            background:
+                radial-gradient(1300px 700px at 15% 5%, rgba(0, 233, 255, 0.28), transparent 58%),
+                radial-gradient(1100px 760px at 88% 92%, rgba(255, 47, 216, 0.22), transparent 58%),
+                linear-gradient(145deg, #020611 0%, #090f24 46%, #170928 100%);
+            color: var(--ink);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            left: 0;
+            width: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::before {
+            top: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0.055) 0,
+                rgba(255, 255, 255, 0.055) 1px,
+                transparent 1px,
+                transparent 4px
+            );
+            mix-blend-mode: soft-light;
+            opacity: 0.18;
+        }
+
+        body::after {
+            top: 0;
+            height: 45vh;
+            background: linear-gradient(to bottom, rgba(0, 233, 255, 0.08), transparent);
+        }
+
+        .slides-container {
+            flex-grow: 1;
+            position: relative;
+            transform: translateY(var(--presenter-offset-y, 0px)) scale(var(--presentation-scale));
+            transform-origin: center center;
+            transition: transform 0.08s linear;
+            will-change: transform;
+            z-index: 1;
+            perspective: 1800px;
+            overflow: hidden;
+        }
+
+        .presenter-mode {
+            --presenter-offset-y: -85px;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.32s ease, transform 0.48s cubic-bezier(0.2, 0.7, 0.2, 1);
+            background: linear-gradient(160deg, rgba(9, 18, 42, 0.93), rgba(18, 15, 46, 0.9));
+            padding: clamp(20px, 3vw, 40px);
+            box-sizing: border-box;
+            text-align: center;
+            z-index: 1;
+            border-radius: 18px;
+            border: 1px solid rgba(0, 233, 255, 0.35);
+            box-shadow:
+                0 0 0 1px rgba(255, 47, 216, 0.12) inset,
+                0 18px 40px rgba(2, 6, 24, 0.62);
+            transform: translateY(18px) scale(0.986) rotateX(2.2deg);
+            overflow: hidden;
+        }
+
+        .slide::after {
+            content: '';
+            position: absolute;
+            inset: 10px;
+            border: 1px solid rgba(0, 233, 255, 0.22);
+            border-radius: 14px;
+            box-shadow: 0 0 14px rgba(0, 233, 255, 0.08) inset;
+            pointer-events: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 2;
+            transform: translateY(0) scale(1) rotateX(0);
+            animation: slideReveal 650ms cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+
+        h1, h2 {
+            font-family: 'Orbitron', 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            color: #dffcff;
+            font-size: clamp(3rem, 3.9vw, 4.4rem);
+            margin: 0 0 16px;
+            padding-bottom: 12px;
+            max-width: min(1120px, 92vw);
+            border-bottom: 2px solid rgba(255, 47, 216, 0.88);
+            text-shadow: 0 0 10px rgba(0, 233, 255, 0.3);
+        }
+
+        h2 {
+            color: #d7fbff;
+            font-size: clamp(2.2rem, 2.85vw, 3.2rem);
+            margin: 0 0 18px;
+            text-shadow: 0 0 10px rgba(0, 233, 255, 0.22);
+        }
+
+        ul {
+            text-align: left;
+            display: inline-block;
+            font-size: clamp(1.3rem, 1.8vw, 1.85rem);
+            line-height: 1.45;
+            max-width: min(1120px, 92vw);
+            margin: 0;
+            padding-left: 1.3em;
+        }
+
+        li { margin-bottom: 0.82em; text-wrap: pretty; }
+        li::marker { color: var(--neon-gold); }
+        b { color: #9bedff; font-weight: 700; }
+
+        .quote {
+            font-size: clamp(1.25rem, 1.7vw, 1.7rem);
+            color: #d6f7ff;
+            font-style: italic;
+            margin: 18px 0 0;
+            padding: clamp(16px, 2vw, 22px);
+            border-left: 4px solid rgba(255, 47, 216, 0.95);
+            background: linear-gradient(140deg, rgba(23, 14, 52, 0.85), rgba(13, 24, 52, 0.8));
+            max-width: min(1000px, 92vw);
+        }
+
+        /* --- Audio Button Styling --- */
+        .play-audio-btn {
+            margin-top: 25px;
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, rgba(255, 47, 216, 0.4), rgba(107, 32, 255, 0.5));
+            border: 2px solid rgba(255, 47, 216, 0.8);
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 47, 216, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+
+        .play-audio-btn:hover {
+            background: linear-gradient(135deg, rgba(255, 47, 216, 0.6), rgba(107, 32, 255, 0.7));
+            box-shadow: 0 0 25px rgba(255, 47, 216, 0.6);
+            transform: scale(1.05);
+        }
+        
+        .play-audio-btn.playing {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 25px var(--neon-cyan);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 233, 255, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 233, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 233, 255, 0); }
+        }
+
+        .speaker-notes {
+            background: linear-gradient(165deg, rgba(8, 16, 36, 0.98), rgba(13, 24, 52, 0.95));
+            color: #d7ecff;
+            padding: 20px 40px;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            box-sizing: border-box;
+            border-top: 2px solid rgba(0, 233, 255, 0.6);
+            font-size: 1.2rem;
+            height: 220px;
+            overflow-y: auto;
+            text-align: left;
+            z-index: 100;
+            transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+
+        .speaker-notes.hidden { transform: translateY(100%); }
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 101;
+        }
+
+        .speaker-notes:not(.hidden) ~ .controls { bottom: 240px; }
+
+        .presenter-preview {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            width: 320px;
+            height: 196px;
+            background: rgba(7, 14, 34, 0.96);
+            border: 1px solid rgba(0, 233, 255, 0.65);
+            border-radius: 12px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 233, 255, 0.18);
+            overflow: hidden;
+            z-index: 102;
+            pointer-events: auto;
+        }
+
+        .presenter-preview.hidden {
+            display: none;
+        }
+
+        .presenter-preview-header {
+            height: 30px;
+            line-height: 30px;
+            padding: 0 12px;
+            background: linear-gradient(90deg, rgba(0, 233, 255, 0.2), rgba(255, 47, 216, 0.24));
+            color: #d7fdff;
+            font-size: 0.82rem;
+            font-weight: bold;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif;
+            cursor: move;
+            user-select: none;
+        }
+
+        .presenter-preview-frame {
+            width: 100%;
+            height: calc(100% - 30px);
+            overflow: hidden;
+            position: relative;
+            background: #090f24;
+        }
+
+        .presenter-preview-frame .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 1;
+            z-index: 1;
+            transform-origin: top left;
+            pointer-events: none;
+            transition: none !important;
+            filter: none !important;
+        }
+
+        button.nav-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, rgba(0, 233, 255, 0.22), rgba(26, 141, 255, 0.28));
+            color: #def9ff;
+            border: 1px solid rgba(0, 233, 255, 0.65);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            transition: transform 0.16s ease;
+        }
+
+        button.nav-btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 47, 216, 0.85);
+        }
+
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta), var(--neon-gold));
+            z-index: 101;
+            transition: width 0.28s ease;
+        }
+
+        @keyframes slideReveal {
+            0% { opacity: 0; transform: translateY(32px) scale(0.984); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Audios -->
+<audio id="audio-clip1" src="clip1_power.m4a"></audio>
+<audio id="audio-clip2" src="clip2_berkeley.m4a"></audio>
+
+<div class="progress" id="progressBar" style="width: 16.66%;"></div>
+
+<div class="slides-container">
+    <!-- Slide 1 -->
+    <div class="slide active" id="slide1">
+        <h1>The American Phenomenon: <br>Pedestrian Right-of-Way & Traffic Culture</h1>
+        <p style="font-size: 1.5rem;">Navigating the Unspoken Rules of the Road</p>
+        <p style="color: #9bedff; margin-top: 30px; font-size: 1.3rem;">Bohan Ding, Jiacun Sun, Jiaxuan Zhang, Xiangyu Wang</p>
+        <p style="color: #666; margin-top: 10px;">Group Presentation<br>April 2026</p>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide" id="slide2">
+        <h2>Methodology & Interviewees</h2>
+        <ul>
+            <li><b>Our Goal:</b> To understand if yielding to pedestrians is a strict legal requirement or a cultural habit.</li>
+            <li><b>Interviewee 1 (Curtis):</b> A driver with 7 years of experience who took his test in downtown San Francisco.</li>
+            <li><b>Interviewee 2:</b> A local driver familiar with driving dynamics in Berkeley and the Pacific Northwest.</li>
+        </ul>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide" id="slide3">
+        <h2>Cultural Forces: Defensive Driving</h2>
+        <ul>
+            <li><b>The Concept:</b> "Defensive driving" means letting others on the road react and make the first move.</li>
+            <li><b>Mutual Acknowledgment:</b> Pedestrians and drivers often wave hands at each other to show appreciation.</li>
+            <li><b>Power Dynamics:</b> The driver operates a heavy vehicle with greater power, bearing ultimate responsibility.</li>
+        </ul>
+        <div class="quote">"When you have the greater power, you have to be more responsible with your action..."</div>
+        
+        <!-- Audio Play Button -->
+        <button class="play-audio-btn" id="btn-clip1" onclick="toggleAudio('audio-clip1', 'btn-clip1')">
+            ▶️ Play Interview Clip (Curtis)
+        </button>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide" id="slide4">
+        <h2>Political Forces: The 2023 Jaywalking Law</h2>
+        <ul>
+            <li><b>The Policy:</b> California legalized jaywalking in 2023 when there is no immediate danger.</li>
+            <li><b>Driver Anxiety:</b> This policy increases risk, requiring drivers to be constantly alert.</li>
+            <li><b>Urban vs. Rural:</b> Drivers feel this rule is acceptable for empty highways but should be restricted in dense cities.</li>
+        </ul>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide" id="slide5">
+        <h2>Theory vs. Local Reality: The Berkeley Experience</h2>
+        <ul>
+            <li><b>Late-Night Rush:</b> Drivers can become impatient and rush through intersections late at night.</li>
+            <li><b>Bold Pedestrians:</b> Young people and students in Berkeley often cross boldly, even with oncoming traffic.</li>
+            <li><b>Regional Shifts:</b> Drivers in the Northwest wait patiently, whereas downtown drivers act more rushed.</li>
+        </ul>
+        
+        <!-- Audio Play Button -->
+        <button class="play-audio-btn" id="btn-clip2" onclick="toggleAudio('audio-clip2', 'btn-clip2')">
+            ▶️ Play Interview Clip (Berkeley)
+        </button>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide" id="slide6">
+        <h2>Conclusion</h2>
+        <ul>
+            <li><b>A Complex Intersection:</b> Yielding is a blend of traffic regulations and spontaneous community behavior.</li>
+            <li><b>Safety First:</b> The culture recognizes that safety takes precedence, reinforced by severe penalties.</li>
+            <li><b>Ongoing Evolution:</b> Traffic culture constantly balances driver efficiency with pedestrian freedom.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="speaker-notes hidden" id="notes">
+    <strong style="color: var(--neon-cyan); font-size: 1.3rem;">Speaker Notes:</strong><br><br>
+    <div id="noteContent"></div>
+</div>
+
+<div class="presenter-preview hidden" id="nextSlidePreview">
+    <div class="presenter-preview-header" id="nextSlidePreviewHeader">Next Slide</div>
+    <div class="presenter-preview-frame" id="nextSlidePreviewFrame"></div>
+</div>
+
+<div class="controls">
+    <button class="nav-btn toggle-btn" onclick="toggleNotes()" id="toggleBtn">Show Presenter Notes</button>
+    <button class="nav-btn" onclick="prevSlide()">&#8592; Prev</button>
+    <button class="nav-btn" onclick="nextSlide()">Next &#8594;</button>
+</div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 6;
+    let notesVisible = false;
+    let previewDrag = null;
+    const syncChannelName = 'traffic-culture-slides-sync';
+    const syncChannel = 'BroadcastChannel' in window ? new BroadcastChannel(syncChannelName) : null;
+
+    const notes = [
+        "Hi everyone. As visiting students, one of the first culture shocks we experienced here was the traffic—specifically, cars stopping for us even without traffic lights. Today, our group will explore how everyday traffic interactions reflect deeper cultural and political forces.",
+        
+        "To investigate this, we interviewed two local drivers. We wanted to know if stopping for pedestrians is a strict legal requirement or a spontaneous cultural habit. Interviewee 1, Curtis, has 7 years of driving experience and took his test in downtown SF. Interviewee 2 gave us insight into how Berkeley's traffic differs from the Pacific Northwest.",
+        
+        "A major cultural force we discovered is 'defensive driving.' Curtis explained that drivers are taught to let others make the first move. We also noted spontaneous social interactions, like pedestrians and drivers waving hands to communicate. The underlying philosophy is power dynamics: a driver operates a heavy vehicle with deadly force, holding the ultimate responsibility to yield.<br><br><b><span style='color: #ff2fd8;'>[💡 提示：讲到这里时，点击幻灯片上的播放按钮]</span></b><br><b>串场词：</b> <i>'To better understand this cultural mindset, let's listen to how our interviewee Curtis explains this dynamic...' (播放录音)</i>",
+        
+        "Culture also interacts with politics. In 2023, California legalized jaywalking if there is no immediate danger. Both interviewees noted this political decision places a higher mental burden on the driver. Curtis suggested that while this makes sense on empty highways, it should probably be restricted in dense, high-traffic cities.",
+        
+        "There's also a tension between the 'rules' and local reality. In Berkeley, young students often act boldly, stepping into the street even if a car is coming. Conversely, late at night, drivers lose their patience and rush through. Furthermore, driving in downtown areas feels much more rushed compared to regions like the Northwest.<br><br><b><span style='color: #ff2fd8;'>[💡 提示：讲到这里时，点击幻灯片上的播放按钮]</span></b><br><b>串场词：</b> <i>'This perfect system definitely faces challenges here around campus. Here is what our interviewee noticed about student pedestrians...' (播放录音)</i>",
+        
+        "To conclude, waiting at a crosswalk perfectly illustrates the tension between written laws, unwritten cultural courtesies, and human behavior. It's a continuous negotiation between efficiency and safety, backed by serious legal consequences. Thank you, and we'd love to take your questions."
+    ];
+
+    function updateUI() {
+        document.querySelectorAll('.slide').forEach(el => el.classList.remove('active'));
+        document.getElementById(`slide${currentSlide}`).classList.add('active');
+        
+        document.getElementById('noteContent').innerHTML = notes[currentSlide - 1];
+        document.getElementById('progressBar').style.width = (currentSlide / totalSlides) * 100 + "%";
+        updateNextSlidePreview();
+        
+        // Stop any playing audio when changing slides
+        document.querySelectorAll('audio').forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0;
+        });
+        document.querySelectorAll('.play-audio-btn').forEach(btn => {
+            btn.classList.remove('playing');
+            btn.innerHTML = btn.innerHTML.replace('⏸️ Pause', '▶️ Play');
+        });
+    }
+
+    function showSlide(n, broadcast = true) {
+        currentSlide = n;
+        if (currentSlide > totalSlides) currentSlide = 1;
+        if (currentSlide < 1) currentSlide = totalSlides;
+        
+        updateUI();
+
+        if (broadcast && syncChannel) {
+            syncChannel.postMessage({ type: 'slide', slide: currentSlide });
+            localStorage.setItem('syncPayload', JSON.stringify({ type: 'slide', slide: currentSlide, timestamp: Date.now() }));
+        }
+    }
+
+    function nextSlide() { showSlide(currentSlide + 1); }
+    function prevSlide() { showSlide(currentSlide - 1); }
+
+    function toggleNotes() {
+        notesVisible = !notesVisible;
+        const notesDiv = document.getElementById('notes');
+        const btn = document.getElementById('toggleBtn');
+        const preview = document.getElementById('nextSlidePreview');
+        notesDiv.classList.toggle('hidden', !notesVisible);
+        preview.classList.toggle('hidden', !notesVisible);
+        document.body.classList.toggle('presenter-mode', notesVisible);
+        btn.innerText = notesVisible ? "Hide Presenter Notes" : "Show Presenter Notes";
+        if (notesVisible) {
+            updateNextSlidePreview();
+        }
+    }
+
+    function updateNextSlidePreview() {
+        const frame = document.getElementById('nextSlidePreviewFrame');
+        if (!notesVisible || !frame) {
+            return;
+        }
+
+        const nextSlideNumber = currentSlide >= totalSlides ? 1 : currentSlide + 1;
+        const nextSlide = document.getElementById(`slide${nextSlideNumber}`);
+        if (!nextSlide) {
+            return;
+        }
+
+        const clone = nextSlide.cloneNode(true);
+        const frameWidth = Math.max(frame.clientWidth, 1);
+        const frameHeight = Math.max(frame.clientHeight, 1);
+        const scale = Math.min(frameWidth / window.innerWidth, frameHeight / window.innerHeight);
+
+        clone.removeAttribute('id');
+        clone.classList.remove('active');
+        clone.style.position = 'absolute';
+        clone.style.top = '0';
+        clone.style.left = '0';
+        clone.style.width = `${window.innerWidth}px`;
+        clone.style.height = `${window.innerHeight}px`;
+        clone.style.opacity = '1';
+        clone.style.zIndex = '1';
+        clone.style.transform = `scale(${scale})`;
+        clone.style.transformOrigin = 'top left';
+        clone.style.pointerEvents = 'none';
+
+        frame.innerHTML = '';
+        frame.appendChild(clone);
+    }
+
+    function startPreviewDrag(event) {
+        if (!notesVisible) {
+            return;
+        }
+
+        const preview = document.getElementById('nextSlidePreview');
+        const rect = preview.getBoundingClientRect();
+        preview.style.right = 'auto';
+        preview.style.left = `${rect.left}px`;
+        preview.style.top = `${rect.top}px`;
+
+        previewDrag = {
+            pointerId: event.pointerId,
+            offsetX: event.clientX - rect.left,
+            offsetY: event.clientY - rect.top
+        };
+
+        event.preventDefault();
+        event.currentTarget.setPointerCapture(event.pointerId);
+    }
+
+    function onPreviewDrag(event) {
+        if (!previewDrag || event.pointerId !== previewDrag.pointerId) {
+            return;
+        }
+
+        const preview = document.getElementById('nextSlidePreview');
+        const width = preview.offsetWidth;
+        const height = preview.offsetHeight;
+        const minLeft = 8;
+        const minTop = 8;
+        const maxLeft = Math.max(minLeft, window.innerWidth - width - 8);
+        const maxTop = Math.max(minTop, window.innerHeight - height - 8);
+
+        const nextLeft = Math.min(maxLeft, Math.max(minLeft, event.clientX - previewDrag.offsetX));
+        const nextTop = Math.min(maxTop, Math.max(minTop, event.clientY - previewDrag.offsetY));
+
+        preview.style.left = `${nextLeft}px`;
+        preview.style.top = `${nextTop}px`;
+    }
+
+    function stopPreviewDrag(event) {
+        if (!previewDrag || event.pointerId !== previewDrag.pointerId) {
+            return;
+        }
+        previewDrag = null;
+    }
+
+    // Audio Playback Logic
+    function toggleAudio(audioId, btnId) {
+        const audio = document.getElementById(audioId);
+        const btn = document.getElementById(btnId);
+        
+        if (audio.paused) {
+            // Stop other audios
+            document.querySelectorAll('audio').forEach(a => { if(a.id !== audioId) { a.pause(); a.currentTime = 0; } });
+            document.querySelectorAll('.play-audio-btn').forEach(b => { b.classList.remove('playing'); b.innerHTML = b.innerHTML.replace('⏸️ Pause', '▶️ Play'); });
+            
+            audio.play();
+            btn.classList.add('playing');
+            btn.innerHTML = btn.innerHTML.replace('▶️ Play', '⏸️ Pause');
+        } else {
+            audio.pause();
+            btn.classList.remove('playing');
+            btn.innerHTML = btn.innerHTML.replace('⏸️ Pause', '▶️ Play');
+        }
+
+        // Reset button when audio ends naturally
+        audio.onended = function() {
+            btn.classList.remove('playing');
+            btn.innerHTML = btn.innerHTML.replace('⏸️ Pause', '▶️ Play');
+        };
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "ArrowRight" || event.key === " ") nextSlide();
+        if (event.key === "ArrowLeft") prevSlide();
+    });
+
+    if (syncChannel) {
+        syncChannel.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'slide' && event.data.slide !== currentSlide) {
+                showSlide(event.data.slide, false);
+            }
+        });
+    }
+
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'syncPayload' && e.newValue) {
+            try {
+                const message = JSON.parse(e.newValue);
+                if (message.type === 'slide' && message.slide !== currentSlide) showSlide(message.slide, false);
+            } catch (error) {}
+        }
+    });
+
+    const previewHeader = document.getElementById('nextSlidePreviewHeader');
+    previewHeader.addEventListener('pointerdown', startPreviewDrag);
+    previewHeader.addEventListener('pointermove', onPreviewDrag);
+    previewHeader.addEventListener('pointerup', stopPreviewDrag);
+    previewHeader.addEventListener('pointercancel', stopPreviewDrag);
+
+    updateUI();
+</script>
+
+</body>
+</html>
