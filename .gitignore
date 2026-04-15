@@ -4,5 +4,5 @@
 # Local interview source docs
 *.docx
 
-# Keep archived files in local-only tracked on main
-!local-only/**
+# Exclude local archives on deploy branch
+local-only/
