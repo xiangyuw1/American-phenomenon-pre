@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>American Traffic Culture & Pedestrian Right-of-Way</title>
-    <link rel="preload" href="clip1_power.m4a" as="audio" type="audio/mp4">
-    <link rel="preload" href="clip2_berkeley.m4a" as="audio" type="audio/mp4">
+    <link rel="preload" href="resource/clip1_power.m4a" as="audio" type="audio/mp4">
+    <link rel="preload" href="resource/clip2_berkeley.m4a" as="audio" type="audio/mp4">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@500;600;700&display=swap');
 
@@ -297,6 +297,18 @@
             filter: none !important;
         }
 
+        .presenter-preview-resize-handle {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 18px;
+            height: 18px;
+            cursor: nwse-resize;
+            z-index: 3;
+            touch-action: none;
+            background: linear-gradient(135deg, transparent 0 48%, var(--neon-magenta) 48% 54%, transparent 54% 100%);
+        }
+
         button.nav-btn {
             padding: 10px 20px;
             background: linear-gradient(135deg, rgba(0, 233, 255, 0.22), rgba(26, 141, 255, 0.28));
@@ -333,8 +345,8 @@
 <body>
 
 <!-- Audios -->
-<audio id="audio-clip1" src="clip1_power.m4a"></audio>
-<audio id="audio-clip2" src="clip2_berkeley.m4a"></audio>
+<audio id="audio-clip1" src="resource/clip1_power.m4a"></audio>
+<audio id="audio-clip2" src="resource/clip2_berkeley.m4a"></audio>
 
 <div class="progress" id="progressBar" style="width: 16.66%;"></div>
 
@@ -417,6 +429,7 @@
 <div class="presenter-preview hidden" id="nextSlidePreview">
     <div class="presenter-preview-header" id="nextSlidePreviewHeader">Next Slide</div>
     <div class="presenter-preview-frame" id="nextSlidePreviewFrame"></div>
+    <div class="presenter-preview-resize-handle" id="nextSlidePreviewResizeHandle"></div>
 </div>
 
 <div class="controls">
@@ -428,8 +441,13 @@
 <script>
     let currentSlide = 1;
     const totalSlides = 6;
+    let presentationScale = 1;
+    const minPresentationScale = 0.5;
+    const maxPresentationScale = 5.0;
+    const presentationScaleStep = 0.12;
     let notesVisible = false;
     let previewDrag = null;
+    let previewResize = null;
     const syncChannelName = 'traffic-culture-slides-sync';
     const syncChannel = 'BroadcastChannel' in window ? new BroadcastChannel(syncChannelName) : null;
 
@@ -482,6 +500,21 @@
     function nextSlide() { showSlide(currentSlide + 1); }
     function prevSlide() { showSlide(currentSlide - 1); }
 
+    function setPresentationScale(newScale) {
+        presentationScale = Math.min(maxPresentationScale, Math.max(minPresentationScale, newScale));
+        document.documentElement.style.setProperty('--presentation-scale', presentationScale.toFixed(2));
+    }
+
+    function handlePresentationZoom(event) {
+        if (!event.ctrlKey) {
+            return;
+        }
+
+        event.preventDefault();
+        const direction = event.deltaY > 0 ? -1 : 1;
+        setPresentationScale(presentationScale + (direction * presentationScaleStep));
+    }
+
     function toggleNotes() {
         notesVisible = !notesVisible;
         const notesDiv = document.getElementById('notes');
@@ -531,6 +564,10 @@
     }
 
     function startPreviewDrag(event) {
+        if (previewResize) {
+            return;
+        }
+
         if (!notesVisible) {
             return;
         }
@@ -578,6 +615,58 @@
         previewDrag = null;
     }
 
+    function startPreviewResize(event) {
+        if (!notesVisible) {
+            return;
+        }
+
+        const preview = document.getElementById('nextSlidePreview');
+        const rect = preview.getBoundingClientRect();
+
+        previewResize = {
+            pointerId: event.pointerId,
+            startX: event.clientX,
+            startY: event.clientY,
+            startWidth: rect.width,
+            startHeight: rect.height
+        };
+
+        event.preventDefault();
+        event.stopPropagation();
+        event.currentTarget.setPointerCapture(event.pointerId);
+    }
+
+    function onPreviewResize(event) {
+        if (!previewResize || event.pointerId !== previewResize.pointerId) {
+            return;
+        }
+
+        const preview = document.getElementById('nextSlidePreview');
+        const deltaX = event.clientX - previewResize.startX;
+        const deltaY = event.clientY - previewResize.startY;
+
+        const minWidth = 240;
+        const minHeight = 150;
+        const maxWidth = Math.max(minWidth, window.innerWidth - 16);
+        const maxHeight = Math.max(minHeight, window.innerHeight - 16);
+
+        const nextWidth = Math.min(maxWidth, Math.max(minWidth, previewResize.startWidth + deltaX));
+        const nextHeight = Math.min(maxHeight, Math.max(minHeight, previewResize.startHeight + deltaY));
+
+        preview.style.width = `${nextWidth}px`;
+        preview.style.height = `${nextHeight}px`;
+
+        updateNextSlidePreview();
+    }
+
+    function stopPreviewResize(event) {
+        if (!previewResize || event.pointerId !== previewResize.pointerId) {
+            return;
+        }
+
+        previewResize = null;
+    }
+
     // Audio Playback Logic
     function toggleAudio(audioId, btnId) {
         const audio = document.getElementById(audioId);
@@ -609,6 +698,17 @@
         if (event.key === "ArrowLeft") prevSlide();
     });
 
+    document.addEventListener('wheel', function(event) {
+        if (!event.ctrlKey) {
+            return;
+        }
+
+        event.preventDefault();
+        if (event.target.closest('.slides-container')) {
+            handlePresentationZoom(event);
+        }
+    }, { passive: false, capture: true });
+
     if (syncChannel) {
         syncChannel.addEventListener('message', function(event) {
             if (event.data && event.data.type === 'slide' && event.data.slide !== currentSlide) {
@@ -627,11 +727,17 @@
     });
 
     const previewHeader = document.getElementById('nextSlidePreviewHeader');
+    const previewResizeHandle = document.getElementById('nextSlidePreviewResizeHandle');
     previewHeader.addEventListener('pointerdown', startPreviewDrag);
     previewHeader.addEventListener('pointermove', onPreviewDrag);
     previewHeader.addEventListener('pointerup', stopPreviewDrag);
     previewHeader.addEventListener('pointercancel', stopPreviewDrag);
+    previewResizeHandle.addEventListener('pointerdown', startPreviewResize);
+    previewResizeHandle.addEventListener('pointermove', onPreviewResize);
+    previewResizeHandle.addEventListener('pointerup', stopPreviewResize);
+    previewResizeHandle.addEventListener('pointercancel', stopPreviewResize);
 
+    setPresentationScale(1);
     updateUI();
 </script>
 
