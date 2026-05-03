@@ -8,7 +8,7 @@
     <link rel="preload" href="resource/clip1_power.m4a" as="audio" type="audio/mp4">
     <link rel="preload" href="resource/clip2_berkeley.m4a" as="audio" type="audio/mp4">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
 
         :root {
             --ucb-blue: #003262;
@@ -21,12 +21,14 @@
             --ink: #dff9ff;
             --muted-ink: #9fbad7;
             --panel-dark: rgba(8, 16, 38, 0.84);
+            --font-sans: 'Rajdhani', 'Segoe UI', 'Noto Sans SC', 'Noto Sans CJK SC', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'Heiti SC', 'Source Han Sans SC', sans-serif;
+            --font-heading: 'Orbitron', 'Rajdhani', 'Noto Sans SC', 'Noto Sans CJK SC', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'Heiti SC', 'Source Han Sans SC', sans-serif;
         }
 
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+            font-family: var(--font-sans);
             background:
                 radial-gradient(1300px 700px at 15% 5%, rgba(0, 233, 255, 0.28), transparent 58%),
                 radial-gradient(1100px 760px at 88% 92%, rgba(255, 47, 216, 0.22), transparent 58%),
@@ -128,7 +130,7 @@
         }
 
         h1, h2 {
-            font-family: 'Orbitron', 'Rajdhani', sans-serif;
+            font-family: var(--font-heading);
             text-transform: uppercase;
         }
 
@@ -228,6 +230,7 @@
             text-align: left;
             z-index: 100;
             transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
+            font-family: var(--font-sans);
         }
 
         .speaker-notes.hidden { transform: translateY(100%); }
@@ -346,6 +349,11 @@
         }
 
         @media print {
+            * {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
             /* 16:9 slide canvas for PDF export. */
             @page {
                 size: 16in 9in;
@@ -355,7 +363,8 @@
             html,
             body {
                 width: 16in;
-                height: 9in;
+                height: auto;
+                min-height: 100%;
                 margin: 0;
                 padding: 0;
                 overflow: visible;
@@ -390,6 +399,7 @@
                 justify-content: center;
                 page-break-after: always;
                 break-after: page;
+                font-family: var(--font-sans);
             }
 
             .print-notes-page {
@@ -401,7 +411,7 @@
                 box-sizing: border-box;
                 background: #fff;
                 color: #111;
-                font-family: 'Segoe UI', sans-serif;
+                font-family: var(--font-sans);
                 page-break-after: always;
                 break-after: page;
             }
