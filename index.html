@@ -336,6 +336,10 @@
             transition: width 0.28s ease;
         }
 
+        .print-notes-page {
+            display: none;
+        }
+
         @keyframes slideReveal {
             0% { opacity: 0; transform: translateY(32px) scale(0.984); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
@@ -348,10 +352,16 @@
                 margin: 0;
             }
 
+            html,
             body {
-                height: auto;
+                width: 16in;
+                height: 9in;
+                margin: 0;
+                padding: 0;
                 overflow: visible;
                 print-color-adjust: exact;
+                display: block;
+                background: #fff;
             }
 
             body::before,
@@ -363,17 +373,52 @@
                 height: auto;
                 overflow: visible;
                 transform: none;
+                position: static;
             }
 
             .slide {
                 position: relative;
                 opacity: 1;
                 transform: none;
+                width: 16in;
+                height: 9in;
+                margin: 0;
+                padding: clamp(20px, 3vw, 40px);
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 page-break-after: always;
                 break-after: page;
             }
 
-            .slide:last-child {
+            .print-notes-page {
+                display: block;
+                width: 16in;
+                height: 9in;
+                margin: 0;
+                padding: 0.6in 0.8in;
+                box-sizing: border-box;
+                background: #fff;
+                color: #111;
+                font-family: 'Segoe UI', sans-serif;
+                page-break-after: always;
+                break-after: page;
+            }
+
+            .print-notes-page h3 {
+                margin: 0 0 0.35in;
+                font-size: 28px;
+                color: #111;
+            }
+
+            .print-notes-page p {
+                margin: 0 0 0.25in;
+                font-size: 20px;
+                line-height: 1.5;
+            }
+
+            .print-notes-page:last-child {
                 page-break-after: auto;
                 break-after: auto;
             }
@@ -381,7 +426,8 @@
             .controls,
             .speaker-notes,
             .presenter-preview,
-            .progress {
+            .progress,
+            .play-audio-btn {
                 display: none !important;
             }
         }
@@ -404,6 +450,10 @@
         <p style="color: #9bedff; margin-top: 30px; font-size: 1.3rem;">Bohan Ding, Jiacun Sun, Jiaxuan Zhang, Xiangyu Wang</p>
         <p style="color: #666; margin-top: 10px;">Group Presentation<br>April 2026</p>
     </div>
+    <div class="print-notes-page" id="notes-slide1">
+        <h3>Speaker Notes (Slide 1)</h3>
+        <p>Hi everyone. As visiting students, one of the first culture shocks we experienced here was the traffic—specifically, cars stopping for us even without traffic lights. Today, our group will explore how everyday traffic interactions reflect deeper cultural and political forces.</p>
+    </div>
 
     <!-- Slide 2 -->
     <!-- Speaker Notes: To investigate this, we interviewed two local drivers. We wanted to know if stopping for pedestrians is a strict legal requirement or a spontaneous cultural habit. Interviewee 1, Curtis, has 7 years of driving experience and took his test in downtown SF. Interviewee 2 gave us insight into how Berkeley's traffic differs from the Pacific Northwest. -->
@@ -414,6 +464,10 @@
             <li><b>Interviewee 1 (Curtis):</b> A driver with 7 years of experience who took his test in downtown San Francisco.</li>
             <li><b>Interviewee 2 (Jane):</b> A local driver familiar with driving dynamics in Berkeley and the Pacific Northwest.</li>
         </ul>
+    </div>
+    <div class="print-notes-page" id="notes-slide2">
+        <h3>Speaker Notes (Slide 2)</h3>
+        <p>To investigate this, we interviewed two local drivers. We wanted to know if stopping for pedestrians is a strict legal requirement or a spontaneous cultural habit. Interviewee 1, Curtis, has 7 years of driving experience and took his test in downtown SF. Interviewee 2 gave us insight into how Berkeley's traffic differs from the Pacific Northwest.</p>
     </div>
 
     <!-- Slide 3 -->
@@ -434,6 +488,12 @@
             ▶️ Play Interview Clip (Curtis)
         </button>
     </div>
+    <div class="print-notes-page" id="notes-slide3">
+        <h3>Speaker Notes (Slide 3)</h3>
+        <p>A major cultural force we discovered is "defensive driving." Curtis explained that drivers are taught to let others make the first move. We also noted spontaneous social interactions, like pedestrians and drivers waving hands to communicate. The underlying philosophy is power dynamics: a driver operates a heavy vehicle with deadly force, holding the ultimate responsibility to yield.</p>
+        <p><strong>Cue (中文):</strong> 讲到这里时，点击幻灯片上的播放按钮。</p>
+        <p><strong>Transition line:</strong> "To better understand this cultural mindset, let's listen to how our interviewee Curtis explains this dynamic..." (播放录音)</p>
+    </div>
 
     <!-- Slide 4 -->
     <!-- Speaker Notes: Culture also interacts with politics. In 2023, California legalized jaywalking if there is no immediate danger. Both interviewees noted this political decision places a higher mental burden on the driver. Curtis suggested that while this makes sense on empty roads, it should probably be restricted in dense, high-traffic cities. -->
@@ -444,6 +504,10 @@
             <li><b>Driver Anxiety:</b> This policy increases risk, requiring drivers to be constantly alert.</li>
             <li><b>Urban vs. Rural:</b> Drivers feel this rule is acceptable for empty highways but should be restricted in dense cities.</li>
         </ul>
+    </div>
+    <div class="print-notes-page" id="notes-slide4">
+        <h3>Speaker Notes (Slide 4)</h3>
+        <p>Culture also interacts with politics. In 2023, California legalized jaywalking if there is no immediate danger. Both interviewees noted this political decision places a higher mental burden on the driver. Curtis suggested that while this makes sense on empty roads, it should probably be restricted in dense, high-traffic cities.</p>
     </div>
 
     <!-- Slide 5 -->
@@ -463,6 +527,12 @@
             ▶️ Play Interview Clip (Berkeley)
         </button>
     </div>
+    <div class="print-notes-page" id="notes-slide5">
+        <h3>Speaker Notes (Slide 5)</h3>
+        <p>There's also a tension between the "rules" and local reality. In Berkeley, young students often act boldly, stepping into the street even with oncoming traffic. Conversely, late at night, drivers lose their patience and rush through. Furthermore, driving in downtown areas feels much more rushed compared to regions like the Northwest.</p>
+        <p><strong>Cue (中文):</strong> 讲到这里时，点击幻灯片上的播放按钮。</p>
+        <p><strong>Transition line:</strong> "This perfect system definitely faces challenges here around campus. Here is what our interviewee noticed about student pedestrians..." (播放录音)</p>
+    </div>
 
     <!-- Slide 6 -->
     <!-- Speaker Notes: To conclude, waiting at a crosswalk perfectly illustrates the tension between written laws, unwritten cultural courtesies, and human behavior. It's a continuous negotiation between efficiency and safety, backed by serious legal consequences. Thank you, and we'd love to take your questions. -->
@@ -473,6 +543,10 @@
             <li><b>Safety First:</b> The culture recognizes that safety takes precedence, reinforced by severe penalties.</li>
             <li><b>Ongoing Evolution:</b> Traffic culture constantly balances driver efficiency with pedestrian freedom.</li>
         </ul>
+    </div>
+    <div class="print-notes-page" id="notes-slide6">
+        <h3>Speaker Notes (Slide 6)</h3>
+        <p>To conclude, waiting at a crosswalk perfectly illustrates the tension between written laws, unwritten cultural courtesies, and human behavior. It's a continuous negotiation between efficiency and safety, backed by serious legal consequences. Thank you, and we'd love to take your questions.</p>
     </div>
 </div>
 
