@@ -340,6 +340,51 @@
             0% { opacity: 0; transform: translateY(32px) scale(0.984); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
+
+        @media print {
+            @page {
+                size: 16in 9in;
+                margin: 0;
+            }
+
+            body {
+                height: auto;
+                overflow: visible;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body::before,
+            body::after {
+                display: none;
+            }
+
+            .slides-container {
+                height: auto;
+                overflow: visible;
+                transform: none;
+            }
+
+            .slide {
+                position: relative;
+                opacity: 1;
+                transform: none;
+                page-break-after: always;
+                break-after: page;
+            }
+
+            .slide:last-child {
+                page-break-after: auto;
+                break-after: auto;
+            }
+
+            .controls,
+            .speaker-notes,
+            .presenter-preview,
+            .progress {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -352,6 +397,7 @@
 
 <div class="slides-container">
     <!-- Slide 1 -->
+    <!-- Speaker Notes: Hi everyone. As visiting students, one of the first culture shocks we experienced here was the traffic—specifically, cars stopping for us even without traffic lights. Today, our group will explore how everyday traffic interactions reflect deeper cultural and political forces. -->
     <div class="slide active" id="slide1">
         <h1>The American Phenomenon: <br>Pedestrian Right-of-Way & Traffic Culture</h1>
         <p style="font-size: 1.5rem;">Navigating the Unspoken Rules of the Road</p>
@@ -360,6 +406,7 @@
     </div>
 
     <!-- Slide 2 -->
+    <!-- Speaker Notes: To investigate this, we interviewed two local drivers. We wanted to know if stopping for pedestrians is a strict legal requirement or a spontaneous cultural habit. Interviewee 1, Curtis, has 7 years of driving experience and took his test in downtown SF. Interviewee 2 gave us insight into how Berkeley's traffic differs from the Pacific Northwest. -->
     <div class="slide" id="slide2">
         <h2>Methodology & Interviewees</h2>
         <ul>
@@ -370,6 +417,7 @@
     </div>
 
     <!-- Slide 3 -->
+    <!-- Speaker Notes: A major cultural force we discovered is 'defensive driving.' Curtis explained that drivers are taught to let others make the first move. We also noted spontaneous social interactions, like pedestrians and drivers waving hands to communicate. The underlying philosophy is power dynamics: a driver operates a heavy vehicle with deadly force, holding the ultimate responsibility to yield.<br><br><b><span style='color: #ff2fd8;'>[💡 提示：讲到这里时，点击幻灯片上的播放按钮]</span></b><br><b>串场词：</b> <i>'To better understand this cultural mindset, let's listen to how our interviewee Curtis explains this dynamic...' (播放录音)</i> -->
     <div class="slide" id="slide3">
         <h2>Cultural Forces: Defensive Driving</h2>
         <ul>
@@ -386,6 +434,7 @@
     </div>
 
     <!-- Slide 4 -->
+    <!-- Speaker Notes: Culture also interacts with politics. In 2023, California legalized jaywalking if there is no immediate danger. Both interviewees noted this political decision places a higher mental burden on the driver. Curtis suggested that while this makes sense on empty roads, it should probably be restricted in dense, high-traffic cities. -->
     <div class="slide" id="slide4">
         <h2>Political Forces: The 2023 Jaywalking Law</h2>
         <ul>
@@ -396,6 +445,7 @@
     </div>
 
     <!-- Slide 5 -->
+    <!-- Speaker Notes: There's also a tension between the 'rules' and local reality. In Berkeley, young students often act boldly, stepping into the street even with oncoming traffic. Conversely, late at night, drivers lose their patience and rush through. Furthermore, driving in downtown areas feels much more rushed compared to regions like the Northwest.<br><br><b><span style='color: #ff2fd8;'>[💡 提示：讲到这里时，点击幻灯片上的播放按钮]</span></b><br><b>串场词：</b> <i>'This perfect system definitely faces challenges here around campus. Here is what our interviewee noticed about student pedestrians...' (播放录音)</i> -->
     <div class="slide" id="slide5">
         <h2>Theory vs. Local Reality: The Berkeley Experience</h2>
         <ul>
@@ -411,6 +461,7 @@
     </div>
 
     <!-- Slide 6 -->
+    <!-- Speaker Notes: To conclude, waiting at a crosswalk perfectly illustrates the tension between written laws, unwritten cultural courtesies, and human behavior. It's a continuous negotiation between efficiency and safety, backed by serious legal consequences. Thank you, and we'd love to take your questions. -->
     <div class="slide" id="slide6">
         <h2>Conclusion</h2>
         <ul>
