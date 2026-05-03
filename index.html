@@ -8,7 +8,7 @@
     <link rel="preload" href="resource/clip1_power.m4a" as="audio" type="audio/mp4">
     <link rel="preload" href="resource/clip2_berkeley.m4a" as="audio" type="audio/mp4">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
 
         :root {
             --ucb-blue: #003262;
@@ -21,12 +21,14 @@
             --ink: #dff9ff;
             --muted-ink: #9fbad7;
             --panel-dark: rgba(8, 16, 38, 0.84);
+            --font-sans: 'Rajdhani', 'Segoe UI', 'Noto Sans SC', 'Noto Sans CJK SC', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'Heiti SC', 'Source Han Sans SC', sans-serif;
+            --font-heading: 'Orbitron', 'Rajdhani', 'Noto Sans SC', 'Noto Sans CJK SC', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'Heiti SC', 'Source Han Sans SC', sans-serif;
         }
 
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+            font-family: var(--font-sans);
             background:
                 radial-gradient(1300px 700px at 15% 5%, rgba(0, 233, 255, 0.28), transparent 58%),
                 radial-gradient(1100px 760px at 88% 92%, rgba(255, 47, 216, 0.22), transparent 58%),
@@ -128,7 +130,7 @@
         }
 
         h1, h2 {
-            font-family: 'Orbitron', 'Rajdhani', sans-serif;
+            font-family: var(--font-heading);
             text-transform: uppercase;
         }
 
@@ -228,6 +230,7 @@
             text-align: left;
             z-index: 100;
             transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
+            font-family: var(--font-sans);
         }
 
         .speaker-notes.hidden { transform: translateY(100%); }
@@ -336,9 +339,107 @@
             transition: width 0.28s ease;
         }
 
+        .print-notes-page {
+            display: none;
+        }
+
         @keyframes slideReveal {
             0% { opacity: 0; transform: translateY(32px) scale(0.984); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* 16:9 slide canvas for PDF export. */
+            @page {
+                size: 16in 9in;
+                margin: 0;
+            }
+
+            html,
+            body {
+                width: 16in;
+                height: auto;
+                min-height: 100%;
+                margin: 0;
+                padding: 0;
+                overflow: visible;
+                print-color-adjust: exact;
+                display: block;
+                background: #fff;
+            }
+
+            body::before,
+            body::after {
+                display: none;
+            }
+
+            .slides-container {
+                height: auto;
+                overflow: visible;
+                transform: none;
+                position: static;
+            }
+
+            .slide {
+                position: relative;
+                opacity: 1;
+                transform: none;
+                width: 16in;
+                height: 9in;
+                margin: 0;
+                padding: clamp(20px, 3vw, 40px);
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                page-break-after: always;
+                break-after: page;
+                font-family: var(--font-sans);
+            }
+
+            .print-notes-page {
+                display: block;
+                width: 16in;
+                height: 9in;
+                margin: 0;
+                padding: 0.6in 0.8in;
+                box-sizing: border-box;
+                background: #fff;
+                color: #111;
+                font-family: var(--font-sans);
+                page-break-after: always;
+                break-after: page;
+            }
+
+            .print-notes-page h3 {
+                margin: 0 0 0.35in;
+                font-size: 28px;
+                color: #111;
+            }
+
+            .print-notes-page p {
+                margin: 0 0 0.25in;
+                font-size: 20px;
+                line-height: 1.5;
+            }
+
+            .print-notes-page:last-child {
+                page-break-after: auto;
+                break-after: auto;
+            }
+
+            .controls,
+            .speaker-notes,
+            .presenter-preview,
+            .progress,
+            .play-audio-btn {
+                display: none !important;
+            }
         }
     </style>
 </head>
@@ -352,14 +453,20 @@
 
 <div class="slides-container">
     <!-- Slide 1 -->
+    <!-- Speaker Notes: Hi everyone. As visiting students, one of the first culture shocks we experienced here was the traffic—specifically, cars stopping for us even without traffic lights. Today, our group will explore how everyday traffic interactions reflect deeper cultural and political forces. -->
     <div class="slide active" id="slide1">
         <h1>The American Phenomenon: <br>Pedestrian Right-of-Way & Traffic Culture</h1>
         <p style="font-size: 1.5rem;">Navigating the Unspoken Rules of the Road</p>
         <p style="color: #9bedff; margin-top: 30px; font-size: 1.3rem;">Bohan Ding, Jiacun Sun, Jiaxuan Zhang, Xiangyu Wang</p>
         <p style="color: #666; margin-top: 10px;">Group Presentation<br>April 2026</p>
     </div>
+    <div class="print-notes-page" id="notes-slide1">
+        <h3>Speaker Notes (Slide 1)</h3>
+        <p>Hi everyone. As visiting students, one of the first culture shocks we experienced here was the traffic—specifically, cars stopping for us even without traffic lights. Today, our group will explore how everyday traffic interactions reflect deeper cultural and political forces.</p>
+    </div>
 
     <!-- Slide 2 -->
+    <!-- Speaker Notes: To investigate this, we interviewed two local drivers. We wanted to know if stopping for pedestrians is a strict legal requirement or a spontaneous cultural habit. Interviewee 1, Curtis, has 7 years of driving experience and took his test in downtown SF. Interviewee 2 gave us insight into how Berkeley's traffic differs from the Pacific Northwest. -->
     <div class="slide" id="slide2">
         <h2>Methodology & Interviewees</h2>
         <ul>
@@ -368,8 +475,14 @@
             <li><b>Interviewee 2 (Jane):</b> A local driver familiar with driving dynamics in Berkeley and the Pacific Northwest.</li>
         </ul>
     </div>
+    <div class="print-notes-page" id="notes-slide2">
+        <h3>Speaker Notes (Slide 2)</h3>
+        <p>To investigate this, we interviewed two local drivers. We wanted to know if stopping for pedestrians is a strict legal requirement or a spontaneous cultural habit. Interviewee 1, Curtis, has 7 years of driving experience and took his test in downtown SF. Interviewee 2 gave us insight into how Berkeley's traffic differs from the Pacific Northwest.</p>
+    </div>
 
     <!-- Slide 3 -->
+    <!-- Speaker Notes: A major cultural force we discovered is 'defensive driving.' Curtis explained that drivers are taught to let others make the first move. We also noted spontaneous social interactions, like pedestrians and drivers waving their hands to communicate. The underlying philosophy is power dynamics: a driver operates a heavy vehicle with deadly force, holding the ultimate responsibility to yield. -->
+    <!-- Transition line: "To better understand this cultural mindset, let's listen to how our interviewee Curtis explains this dynamic..." (Play Audio) -->
     <div class="slide" id="slide3">
         <h2>Cultural Forces: Defensive Driving</h2>
         <ul>
@@ -384,8 +497,14 @@
             ▶️ Play Interview Clip (Curtis)
         </button>
     </div>
+    <div class="print-notes-page" id="notes-slide3">
+        <h3>Speaker Notes (Slide 3)</h3>
+        <p>A major cultural force we discovered is "defensive driving." Curtis explained that drivers are taught to let others make the first move. We also noted spontaneous social interactions, like pedestrians and drivers waving their hands to communicate. The underlying philosophy is power dynamics: a driver operates a heavy vehicle with deadly force, holding the ultimate responsibility to yield.</p>
+        <p><strong>Transition line:</strong> "To better understand this cultural mindset, let's listen to how our interviewee Curtis explains this dynamic..." (Play Audio)</p>
+    </div>
 
     <!-- Slide 4 -->
+    <!-- Speaker Notes: Culture also interacts with politics. In 2023, California legalized jaywalking if there is no immediate danger. Both interviewees noted this political decision places a higher mental burden on the driver. Curtis suggested that while this makes sense on empty roads, it should probably be restricted in dense, high-traffic cities. -->
     <div class="slide" id="slide4">
         <h2>Political Forces: The 2023 Jaywalking Law</h2>
         <ul>
@@ -394,8 +513,14 @@
             <li><b>Urban vs. Rural:</b> Drivers feel this rule is acceptable for empty highways but should be restricted in dense cities.</li>
         </ul>
     </div>
+    <div class="print-notes-page" id="notes-slide4">
+        <h3>Speaker Notes (Slide 4)</h3>
+        <p>Culture also interacts with politics. In 2023, California legalized jaywalking if there is no immediate danger. Both interviewees noted this political decision places a higher mental burden on the driver. Curtis suggested that while this makes sense on empty roads, it should probably be restricted in dense, high-traffic cities.</p>
+    </div>
 
     <!-- Slide 5 -->
+    <!-- Speaker Notes: There's also a tension between the 'rules' and local reality. In Berkeley, young students often act boldly, stepping into the street even with oncoming traffic. Conversely, late at night, drivers lose their patience and rush through. Furthermore, driving in downtown areas feels much more rushed compared to regions like the Northwest. -->
+    <!-- Transition line: "This perfect system definitely faces challenges here around campus. Here is what our interviewee noticed about student pedestrians..." (Play Audio) -->
     <div class="slide" id="slide5">
         <h2>Theory vs. Local Reality: The Berkeley Experience</h2>
         <ul>
@@ -409,8 +534,14 @@
             ▶️ Play Interview Clip (Berkeley)
         </button>
     </div>
+    <div class="print-notes-page" id="notes-slide5">
+        <h3>Speaker Notes (Slide 5)</h3>
+        <p>There's also a tension between the "rules" and local reality. In Berkeley, young students often act boldly, stepping into the street even with oncoming traffic. Conversely, late at night, drivers lose their patience and rush through. Furthermore, driving in downtown areas feels much more rushed compared to regions like the Northwest.</p>
+        <p><strong>Transition line:</strong> "This perfect system definitely faces challenges here around campus. Here is what our interviewee noticed about student pedestrians..." (Play Audio)</p>
+    </div>
 
     <!-- Slide 6 -->
+    <!-- Speaker Notes: To conclude, waiting at a crosswalk perfectly illustrates the tension between written laws, unwritten cultural courtesies, and human behavior. It's a continuous negotiation between efficiency and safety, backed by serious legal consequences. Thank you, and we'd love to take your questions. -->
     <div class="slide" id="slide6">
         <h2>Conclusion</h2>
         <ul>
@@ -418,6 +549,10 @@
             <li><b>Safety First:</b> The culture recognizes that safety takes precedence, reinforced by severe penalties.</li>
             <li><b>Ongoing Evolution:</b> Traffic culture constantly balances driver efficiency with pedestrian freedom.</li>
         </ul>
+    </div>
+    <div class="print-notes-page" id="notes-slide6">
+        <h3>Speaker Notes (Slide 6)</h3>
+        <p>To conclude, waiting at a crosswalk perfectly illustrates the tension between written laws, unwritten cultural courtesies, and human behavior. It's a continuous negotiation between efficiency and safety, backed by serious legal consequences. Thank you, and we'd love to take your questions.</p>
     </div>
 </div>
 
@@ -456,7 +591,7 @@
         
         "To investigate this, we interviewed two local drivers. We wanted to know if stopping for pedestrians is a strict legal requirement or a spontaneous cultural habit. Interviewee 1, Curtis, has 7 years of driving experience and took his test in downtown SF. Interviewee 2 gave us insight into how Berkeley's traffic differs from the Pacific Northwest.",
         
-        "A major cultural force we discovered is 'defensive driving.' Curtis explained that drivers are taught to let others make the first move. We also noted spontaneous social interactions, like pedestrians and drivers waving hands to communicate. The underlying philosophy is power dynamics: a driver operates a heavy vehicle with deadly force, holding the ultimate responsibility to yield.<br><br><b><span style='color: #ff2fd8;'>[💡 提示：讲到这里时，点击幻灯片上的播放按钮]</span></b><br><b>串场词：</b> <i>'To better understand this cultural mindset, let's listen to how our interviewee Curtis explains this dynamic...' (播放录音)</i>",
+        "A major cultural force we discovered is 'defensive driving.' Curtis explained that drivers are taught to let others make the first move. We also noted spontaneous social interactions, like pedestrians and drivers waving their hands to communicate. The underlying philosophy is power dynamics: a driver operates a heavy vehicle with deadly force, holding the ultimate responsibility to yield.<br><br><b><span style='color: #ff2fd8;'>[💡 提示：讲到这里时，点击幻灯片上的播放按钮]</span></b><br><b>串场词：</b> <i>'To better understand this cultural mindset, let's listen to how our interviewee Curtis explains this dynamic...' (播放录音)</i>",
         
         "Culture also interacts with politics. In 2023, California legalized jaywalking if there is no immediate danger. Both interviewees noted this political decision places a higher mental burden on the driver. Curtis suggested that while this makes sense on empty roads, it should probably be restricted in dense, high-traffic cities.",
         
